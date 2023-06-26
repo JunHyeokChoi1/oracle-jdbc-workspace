@@ -51,7 +51,6 @@ SELECT INSTR('aabaacaabbaa', 'b', -1) FROM DUAL;
 SELECT INSTR('aabaacaabbaa', 'b', -1, 2) FROM DUAL;
 
 -- 's'가 포함되어 있는 이메일 중 이메일, 이메일의 @위치, 이메일에서 뒤에서 2번째에 있는 's'위치 조회
-
 SELECT EMAIL, INSTR(EMAIL, 's', -1, 2), INSTR(EMAIL, '@') FROM EMPLOYEE WHERE EMAIL LIKE '%s%';
 
 /*
@@ -291,7 +290,7 @@ SELECT TO_CHAR(SYSDATE, 'MM'), TO_CHAR(SYSDATE, 'MON'), TO_CHAR(SYSDATE, 'MONTH'
 -- SELECT TO_CHAR(SYSDATE, 'D') -- 주기준 , TO_CHAR(SYSDATE, 'DD'), --월기준 TO_CHAR(SYSDATE, 'DDD') --년기준 FROM DUAL;
 
 -- 요일과 관련된 포맷
-SELECT TO_CHAR(SYSDATE, 'DAY'), TO_CHAR(SYSDATE, 'DY') FROM DUAL;
+SELECT TO_CHAR(SYSDATE), TO_CHAR(SYSDATE, 'DAY') FROM DUAL;
 
 -- 직원명, 입사일 조회
 -- 단 입사일은 포맷을 지정해서 조회 EX) 2023년 6월 21일 (수)
