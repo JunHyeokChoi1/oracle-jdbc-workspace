@@ -12,6 +12,8 @@ import java.util.Properties;
 
 import config.ServerInfo;
 
+//jdbc ? 갯수에 따라 set도 갯수만큼
+// select 할시에는 Resultset rs = st.executeQuery 사용
 public class PersonTest {
 	
 	private Properties p = new Properties();
@@ -29,7 +31,7 @@ public class PersonTest {
 	// 고정적인 반복 -- 디비연결, 자원 반납
 	public Connection getConnect() throws SQLException {
 		Connection conn = DriverManager.getConnection(ServerInfo.URL, ServerInfo.USER, ServerInfo.PASSWARD);
-		return null;
+		return conn;
 	}
 	
 	public void closeAll(Connection conn, PreparedStatement st) throws SQLException {
@@ -54,27 +56,55 @@ public class PersonTest {
 		int result = st.executeUpdate();
 		if(result==1) {
 			System.out.println(name + "님 추가!");
-			
-			closeAll(conn, st);
 		}
+		closeAll(conn, st);
 		
 	}	
 	
-	public void removePerson(int id) {
+	public void removePerson(int id) throws SQLException {
+		Connection conn = getConnect();
+		PreparedStatement st = conn.prepareStatement(p.getProperty("removePerson"));
+		st.setInt(1, id);
 		
+		int result = st.executeUpdate();
+		System.out.println(result + "명 삭제");
+		
+		closeAll(conn, st);
 	}
 	
-	public void updatePerson(int id, String address) {
-	
+	public void updatePerson(int id, String address) throws SQLException {
+		Connection conn = getConnect();
+		PreparedStatement st = conn.prepareStatement(p.getProperty("updatePerson"));
+		st.setString(1, address);
+		st.setInt(2, id);
+		
+		int result = st.executeUpdate();
+		System.out.println(result + "명 수정");
+		
+		closeAll(conn, st);
 	}
 	
-	public void searchAllPerson() {
+	public void searchAllPerson() throws SQLException {
+		Connection conn = getConnect();
+		PreparedStatement st = conn.prepareStatement(p.getProperty("searchAllPerson"));
 		
+		ResultSet rs = st.executeQuery();
 		
+		while(rs.next()) {
+			System.out.println(rs.getString("name") + ", " + rs.getString("address"));
+		}
 	}
 	
-	public void viewPerson(int id ) {
+	public void viewPerson(int id ) throws SQLException {
+		Connection conn = getConnect();
+		PreparedStatement st = conn.prepareStatement(p.getProperty("viewPerson"));
 		
+		st.setInt(1, id);
+		
+		ResultSet rs = st.executeQuery();
+		if(rs.next()) {
+			System.out.println(rs.getString("name") + ", " + rs.getString("address"));
+		}
 	}
 	
 	
